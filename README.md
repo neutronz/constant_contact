@@ -32,7 +32,7 @@ All examples require setting up either the specific class you'll be use or the B
     ConstantContact::Base.api_key = 'api-key'
     ConstantContact::Base.password = 'password'
 
-    # Contact not found. Create it.
+    # Contact not found. Create it on the default list (1)
     begin
       @contact = ConstantContact::Contact.new(
         :email_address => "jon@example.com",
@@ -40,6 +40,15 @@ All examples require setting up either the specific class you'll be use or the B
         :last_name => "smith"
       )
       @contact.save
+
+      @contact_on_specific_lists = ConstantContact::Contact.new(
+        :email_address => "jon@example.com",
+        :first_name => "jon",
+        :last_name => "smith",
+		:list_ids => [7,8]
+	  )
+      @contact_on_specific_lists.save
+
     rescue ActiveResource::ResourceConflict => e
       # contact already exists
       puts 'Contact already exists. Saving contact failed.'

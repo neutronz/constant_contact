@@ -10,6 +10,11 @@ module ConstantContact
     #                       :custom_field6, :custom_field7, :custom_field8, :custom_field9, :email_address, :email_type, 
     #                       :first_name, :home_phone, :insert_time, :job_title, :last_name, :last_update_time, :name, :note, 
     #                       :postal_code, :state_code, :state_name, :status, :sub_postal_code, :work_phone ]
+
+    def initialize(opts = {})
+      @contact_lists = opts.delete(:list_ids) if opts[:list_ids]
+      super
+    end
     
     def to_xml
       xml = Builder::XmlMarkup.new

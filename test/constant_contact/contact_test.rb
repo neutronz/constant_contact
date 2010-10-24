@@ -26,6 +26,11 @@ class ContactTest < Test::Unit::TestCase
       @contact = ConstantContact::Contact.new(:email_address => "jon@example.com",
                              :first_name => "jon",
                              :last_name => "smith")
+    
+      @contact_w_list = ConstantContact::Contact.new(:email_address => "jon@example.com",
+                             :first_name => "jon",
+                             :last_name => "smith",
+                             :list_ids => [7,8])
     end
     
     should 'returns nil when contact list has not been set' do
@@ -35,6 +40,14 @@ class ContactTest < Test::Unit::TestCase
       @contact.contact_lists = [1,2]
       assert_equal [1,2], @contact.contact_lists
     end
+    
+    should 'returns array when contact list has been set in the constructor' do
+      assert_not_equal nil, @contact_w_list.contact_lists
+    end
+    should 'returns array of contact list ids when contact list has been set in the constructor' do
+      assert_equal [7,8], @contact_w_list.contact_lists
+    end
+    
   end
   
   context 'to_xml' do
@@ -66,7 +79,7 @@ class ContactTest < Test::Unit::TestCase
       assert_match /<ContactList id="/, @contact.to_xml
     end
     
-    should 'include all contact lists configured' do
+    should 'include all default contact lists configured' do
       @contact.contact_lists = [1,2]
       assert_equal [1,2], @contact.contact_lists
       xml = @contact.to_xml
@@ -74,6 +87,7 @@ class ContactTest < Test::Unit::TestCase
       assert_match /<ContactList id="#{Regexp.escape(@contact.list_url(1))}"/, xml
       assert_match /<ContactList id="#{Regexp.escape(@contact.list_url(2))}"/, xml
     end
+        
   end
   
   context "find with query parameters" do
